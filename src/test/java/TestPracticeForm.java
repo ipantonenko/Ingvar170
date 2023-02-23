@@ -2,18 +2,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class TestPracticeForm {
-
+public class TestPracticeForm extends TestPreconditions {
+    private WebDriver driver;
+    private String expectedResult = "Thanks for submitting the form";
+    private WebElement fixedban, fixedban2;
     @Test
     public void fillPracticeForm() {
-        String expectedResult = "Thanks for submitting the form";
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
-        System.out.println(driver.getTitle());
+        driver = openDemoQA();
 
         //click on form button
         driver.findElement(By.xpath("//body/div[@id='app']/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]")).click();
@@ -37,16 +35,16 @@ public class TestPracticeForm {
         driver.findElement(By.xpath("//input[@id='userNumber']")).sendKeys("1234567891");
 
         // Find the element containing the advertisement
-        WebElement adElement = driver.findElement(By.xpath("//div[@id='fixedban']"));
+        fixedban = driver.findElement(By.xpath("//div[@id='fixedban']"));
 
         // Hide the element using JavaScript
-        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='none';", adElement);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='none';", fixedban);
 
         // Find the element containing the advertisement 2
-        WebElement adElement2 = driver.findElement(By.xpath("//body/div[@id='app']/footer[1]"));
+        fixedban2 = driver.findElement(By.xpath("//body/div[@id='app']/footer[1]"));
 
         // Hide the element using JavaScript
-        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='none';", adElement2);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='none';", fixedban2);
 
         //click on Submit button
         driver.findElement(By.xpath("//button[@id='submit']")).click();
@@ -55,5 +53,7 @@ public class TestPracticeForm {
         String actualResult = driver.findElement(By.xpath("//div[@id='example-modal-sizes-title-lg']")).getText();
 
         Assert.assertEquals(actualResult, expectedResult);
+
+        driver.close();
     }
 }
